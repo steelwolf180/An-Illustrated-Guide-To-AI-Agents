@@ -5,7 +5,7 @@
 #   ./run-gemma.sh list
 #   ./run-gemma.sh <model> [-p port] [-c ctx] [-t threads] [-v] [-- extra llama-server flags]
 #
-# Models: g3-1b  g3-4b  g3-12b  g4-e2b  g4-e4b
+# Models: g3-1b  g3-4b  g4-e2b  g4-e4b
 #
 # Notes:
 #   - Gemma 4 needs a recent llama.cpp (build from source). The old Debian
@@ -25,17 +25,16 @@ fi
 declare -A REPO=(
   [g3-1b]="ggml-org/gemma-3-1b-it-GGUF"
   [g3-4b]="unsloth/gemma-3-4b-it-GGUF:Q4_K_M"
-  [g3-12b]="unsloth/gemma-3-12b-it-GGUF:Q4_K_M"
   [g4-e2b]="ggml-org/gemma-4-E2B-it-GGUF:Q4_0"
   [g4-e4b]="unsloth/gemma-4-E4B-it-GGUF:Q4_K_M"
 )
 
 # rough RAM needed in GB (model + context cache + overhead)
 declare -A NEED_GB=(
-  [g3-1b]=1 [g3-4b]=4 [g3-12b]=9 [g4-e2b]=3.5 [g4-e4b]=6
+  [g3-1b]=1 [g3-4b]=4 [g4-e2b]=3.5 [g4-e4b]=6
 )
 
-ORDER=(g3-1b g3-4b g3-12b g4-e2b g4-e4b)
+ORDER=(g3-1b g3-4b g4-e2b g4-e4b)
 
 usage() {
   sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'
@@ -62,7 +61,7 @@ if [[ -z "${REPO[$MODEL]:-}" ]]; then
   exit 1
 fi
 
-PORT=8080
+PORT=11434
 CTX=4096
 THREADS=4
 MMPROJ="--no-mmproj"
